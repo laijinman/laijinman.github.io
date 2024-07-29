@@ -63,9 +63,28 @@ openssl x509 -req -in output/my.csr -CA output/root-ca.crt -CAkey output/root-ca
 
 {: file='generate-certificate.bash'}
 
-> CRT 转成 PEM
+> 格式转换
 > ```bash
+> # CRT 转成 PEM
 > openssl x509 -outform PEM -in output/my.crt -out output/my.pem
+>
+> # CRT 转成 CER
+> openssl x509 -outform der -in output/my.crt -out output/my.cer
+>
+> # CRT 转成 PFX
+> openssl pkcs12 -export -in output/my.crt -inkey output/my.key -password pass:change@me -out output/my.pfx
+>
+> # CRT 转成 P7B
+> openssl crl2pkcs7 -nocrl -certfile output/my.crt -out output/my.p7b
+>
+> # CRT 转成 P12
+> openssl pkcs12 -export -in output/my.crt -inkey output/my.key -passin pass:change@me -name '*.my.dev' -chain -CAfile output/RootCA.crt -password pass:change@me -caname '*.my.dev' -out output/my.p12
+> # 可选：查看 P12 证书
+> #keytool -rfc -list -keystore output/my.p12 -storetype pkcs12
+>
+> # P12 转成 JKS
+> keytool -importkeystore -srckeystore output/my.p12 -srcstoretype PKCS12 -deststoretype JKS -destkeystore output/my.jks
+> keytool -importkeystore -srckeystore output/my.jks -destkeystore output/my.jks -deststoretype pkcs12
 > ```
 {: .prompt-tip }
 
