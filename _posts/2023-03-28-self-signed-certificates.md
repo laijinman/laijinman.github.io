@@ -62,26 +62,40 @@ openssl x509 -req -in output/my.csr -CA output/root-ca.crt -CAkey output/root-ca
 ```
 {: file='generate-certificate.bash'}
 
-> 格式转换
+> CRT 转成 PEM
 > ```bash
-> # CRT 转成 PEM
 > openssl x509 -outform PEM -in output/my.crt -out output/my.pem
->
-> # CRT 转成 CER
+> ```
+{: .prompt-tip }
+
+> CRT 转成 CER
+> ```bash
 > openssl x509 -outform der -in output/my.crt -out output/my.cer
->
-> # CRT 转成 PFX
+> ```
+{: .prompt-tip }
+
+> ```bash
+> CRT 转成 PFX
 > openssl pkcs12 -export -in output/my.crt -inkey output/my.key -password pass:change@me -out output/my.pfx
->
-> # CRT 转成 P7B
+> ```
+{: .prompt-tip }
+
+> ```bash
+> CRT 转成 P7B
 > openssl crl2pkcs7 -nocrl -certfile output/my.crt -out output/my.p7b
->
-> # CRT 转成 P12
+> ```
+{: .prompt-tip }
+
+> ```bash
+> CRT 转成 P12
 > openssl pkcs12 -export -in output/my.crt -inkey output/my.key -passin pass:change@me -name '*.my.dev' -chain -CAfile output/RootCA.crt -password pass:change@me -caname '*.my.dev' -out output/my.p12
 > # 可选：查看 P12 证书
 > #keytool -rfc -list -keystore output/my.p12 -storetype pkcs12
->
-> # P12 转成 JKS
+> ```
+{: .prompt-tip }
+
+> P12 转成 JKS
+> ```bash
 > keytool -importkeystore -srckeystore output/my.p12 -srcstoretype PKCS12 -deststoretype JKS -destkeystore output/my.jks
 > keytool -importkeystore -srckeystore output/my.jks -destkeystore output/my.jks -deststoretype pkcs12
 > ```
@@ -92,12 +106,14 @@ openssl x509 -req -in output/my.csr -CA output/root-ca.crt -CAkey output/root-ca
 ### Nginx
 
 - 引入证书和私匙：
+
 ```conf
 ssl_certificate      /data/ssl/my.crt;
 ssl_certificate_key  /data/ssl/my.key;
 ```
-- 配置域名： 
-服务端口添加上`ssl`，如`listen  443 ssl;`。
+
+- 配置域名：
+  服务端口添加上`ssl`，如`listen  443 ssl;`。
 
 ## 客户端配置
 
