@@ -74,20 +74,20 @@ openssl x509 -req -in output/my.csr -CA output/root-ca.crt -CAkey output/root-ca
 > ```
 {: .prompt-tip }
 
-> ```bash
 > CRT 转成 PFX
+> ```bash
 > openssl pkcs12 -export -in output/my.crt -inkey output/my.key -password pass:change@me -out output/my.pfx
 > ```
 {: .prompt-tip }
 
-> ```bash
 > CRT 转成 P7B
+> ```bash
 > openssl crl2pkcs7 -nocrl -certfile output/my.crt -out output/my.p7b
 > ```
 {: .prompt-tip }
 
-> ```bash
 > CRT 转成 P12
+> ```bash
 > openssl pkcs12 -export -in output/my.crt -inkey output/my.key -passin pass:change@me -name '*.my.dev' -chain -CAfile output/RootCA.crt -password pass:change@me -caname '*.my.dev' -out output/my.p12
 > # 可选：查看 P12 证书
 > #keytool -rfc -list -keystore output/my.p12 -storetype pkcs12
