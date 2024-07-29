@@ -60,7 +60,6 @@ openssl genrsa -out output/my.key 4096
 openssl req -new -sha256 -key output/my.key -out output/my.csr -subj "/CN=my.dev/O=Personal/OU=Me"
 openssl x509 -req -in output/my.csr -CA output/root-ca.crt -CAkey output/root-ca.key -CAcreateserial -days 3650 -extfile my.ini -extensions req_ext -out output/my.crt
 ```
-
 {: file='generate-certificate.bash'}
 
 > 格式转换
