@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 使用 Docker 搭建 Virtual Studio Code 远程开发环境
+title: Docker 部署 Virtual Studio Code
 date: 2023-03-31 11:19 +0000
 categories:
   - 技术
