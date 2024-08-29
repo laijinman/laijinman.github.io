@@ -16,47 +16,39 @@ Virtual Studio Code 支持服务器安装了，通过自带的 CLI 工具，可�
 ## 创建 Docker 镜像
 
 ```Dockerfile
-FROM ubuntu as downloader
-WORKDIR /tmp/download
-ADD https://az764295.vo.msecnd.net/stable/7f329fe6c66b0f86ae1574c2911b681ad5a45d63/vscode_cli_alpine_x64_cli.tar.gz code.tar.gz
-
-
 FROM ubuntu as builder
-COPY --from=downloader /tmp/download /tmp/download
-WORKDIR /opt/vscode-cli/bin
-RUN tar xf /tmp/download/code.tar.gz
+WORKDIR /tmp/build
+RUN true \
+  && apt-get -qq update \
+  && apt-get -qq install curl -y > /dev/null \
+  && curl -sSL "https://code.visualstudio.com/sha/download?build=stable&os=cli-alpine-x64" | tar xzf -
 
 
 FROM ubuntu AS release
-COPY --from=builder /opt /opt
-RUN apt-get update || true \
-  && apt-get install ca-certificates -y \
-  # clean
+COPY --from=builder /tmp/build/code /usr/local/bin/code
+RUN true \
+  && apt-get -qq update \
+  && apt-get -qq install ca-certificates -y > /dev/null \
   && rm -rf /root/.cache /var/lib/apt/lists/* /var/cache/apt
-ENTRYPOINT ["/opt/vscode-cli/bin/code", "tunnel"]
-CMD ["--accept-server-license-terms"]
+ENTRYPOINT code
+CMD tunnel user login --provider microsoft --accept-server-license-terms
 ```
 {: file='./images/vscode/Dockerfile'}
 
 ## 运行服务
 
 ```yaml
-version: "3"
-
+name: svc
 services:
   vscode:
-    build:          ./images/vscode
-    image:          docker.laijinman.dev/vscode-1.77.0:v1
+    image: vscode
     container_name: vscode
-    hostname:       vscode
-    restart:        unless-stopped
-    volumes:
-    - /root:/root
+    restart: unless-stopped
 ```
 {: file='docker-compose.yaml'}
 
 ```shell
-docker-compose up vscode
+docker-compose up -d vscode
 ```
 - 按提示访问<https://github.com/login/device>，并输入授权码；
 - 访问<https://vscode.dev/tunnel/vscode>即可。
