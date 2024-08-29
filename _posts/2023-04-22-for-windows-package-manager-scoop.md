@@ -3,10 +3,9 @@ layout: post
 title: 适用于 Windows 的软件包管理器 - Scoop
 date: 2023-04-22 05:14 +0000
 categories:
-- 系统
-- Windows
+  - 技术
 tags:
-- scoop
+  - scoop
 ---
 [Scoop](https://scoop.sh)，无意中发现的一款 Windows 下的软件包管理器，通过命令在 Windows 开发环境直接快速安装升级常用软件工具，避免到处找安装包下载并手动安装。
 
