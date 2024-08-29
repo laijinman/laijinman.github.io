@@ -3,12 +3,11 @@ layout: post
 title: 使用 Docker 搭建 Virtual Studio Code 远程开发环境
 date: 2023-03-31 11:19 +0000
 categories:
-- 开发
-- 效率
+  - 技术
 tags:
-- vscode
-- remote
-- ide
+  - vscode
+  - remote
+  - ide
 ---
 
 Virtual Studio Code 支持服务器安装了，通过自带的 CLI 工具，可快速在服务器部署并运行 IDE 远程服务，自带穿透功能实现任意地方远程访问。
