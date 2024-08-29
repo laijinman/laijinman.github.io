@@ -3,11 +3,10 @@ layout: post
 title: Kubernetes 集群部署
 date: 2023-03-22 15:17 +0000
 categories:
-- 开发
-- 服务
+  - 技术
 tags:
-- containerd
-- kubernetes
+  - containerd
+  - kubernetes
 pin: true
 ---
 
