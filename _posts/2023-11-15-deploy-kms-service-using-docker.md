@@ -13,23 +13,15 @@ tags:
 
 ## 部署 KMS 服务
 ```yml
-version: "3"
-
-networks:
-  home:
-    name: home
+name: svc
 
 services:
   vlmcsd:
     image: vlmcsd/vlmcsd
-    read_only: true
     container_name: vlmcsd
-    hostname: vlmcsd.home
-    networks:
-    - home
     restart: unless-stopped
     ports:
-    - 1688:1688
+      - "1688:1688"
 ```
 {: file='docker-compose.yml'}
 
