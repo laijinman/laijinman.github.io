@@ -3,12 +3,11 @@ layout: post
 title: Docker 方式部署 KMS 服务
 date: 2023-11-15 09:33 +0000
 categories: 
-- 系统
-- Windows
+  - 技术
 tags: 
-- docker
-- vlmcsd
-- kms
+  - docker
+  - vlmcsd
+  - kms
 ---
 通过 Docker 方式部署 KMS 服务和简单使用介绍。
 
