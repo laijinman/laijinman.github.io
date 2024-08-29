@@ -3,10 +3,11 @@ layout: post
 title: HELM 实用操作备忘录
 date: 2023-04-11 06:25 +0000
 categories:
-  - 技术
+- 开发
+- 效率
 tags:
-  - kubernetes
-  - helm
+- kubernetes
+- helm
 ---
 
 [Helm](https://helm.sh/) 是容器环境的包管理器工具，在这里记录一下实际应用中的操作，以备后续查阅。

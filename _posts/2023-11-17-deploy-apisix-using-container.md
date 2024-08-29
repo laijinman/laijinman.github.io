@@ -3,11 +3,12 @@ layout: post
 title: 容器方式部署 APISIX 网关
 date: 2023-11-15 10:56 +0000
 categories: 
-  - 技术
+- 开发
+- 服务
 tags: 
-  - apisix
-  - docker
-  - kubernetes
+- apisix
+- docker
+- kubernetes
 mermaid: true
 ---
 

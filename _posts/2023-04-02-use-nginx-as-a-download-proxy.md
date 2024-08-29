@@ -3,10 +3,11 @@ layout: post
 title: 使用 Nginx 作为下载代理
 date: 2023-04-02 09:45 +0000
 categories:
-  - 技术
+- 开发
+- 效率
 tags:
-  - nginx
-  - proxy
+- nginx
+- proxy
 mermaid: true
 ---
 

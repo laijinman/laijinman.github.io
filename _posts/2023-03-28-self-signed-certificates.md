@@ -3,7 +3,8 @@ layout: post
 title: 生成自签名的多泛域名证书
 date: 2023-03-28 06:32 +0000
 categories:
-  - 技术
+  - 开发
+  - 服务
 tags:
   - openssl
   - nginx

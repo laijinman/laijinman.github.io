@@ -3,25 +3,34 @@ layout: post
 title: Docker 方式部署 KMS 服务
 date: 2023-11-15 09:33 +0000
 categories: 
-  - 技术
+- 系统
+- Windows
 tags: 
-  - docker
-  - vlmcsd
-  - kms
+- docker
+- vlmcsd
+- kms
 ---
 通过 Docker 方式部署 KMS 服务和简单使用介绍。
 
 ## 部署 KMS 服务
 ```yml
-name: svc
+version: "3"
+
+networks:
+  home:
+    name: home
 
 services:
   vlmcsd:
     image: vlmcsd/vlmcsd
+    read_only: true
     container_name: vlmcsd
+    hostname: vlmcsd.home
+    networks:
+    - home
     restart: unless-stopped
     ports:
-      - "1688:1688"
+    - 1688:1688
 ```
 {: file='docker-compose.yml'}
 
