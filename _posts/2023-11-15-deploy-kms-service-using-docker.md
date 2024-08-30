@@ -12,28 +12,22 @@ tags:
 通过 Docker 方式部署 KMS 服务和简单使用介绍。
 
 ## 部署 KMS 服务
-```yml
-version: "3"
 
-networks:
-  home:
-    name: home
+```yml
+name: svc
 
 services:
   vlmcsd:
-    image: vlmcsd/vlmcsd
-    read_only: true
     container_name: vlmcsd
-    hostname: vlmcsd.home
-    networks:
-    - home
+    image: vlmcsd/vlmcsd:${VLMCSD_VERSION:-latest}
     restart: unless-stopped
     ports:
-    - 1688:1688
+      - 1688:1688
 ```
 {: file='docker-compose.yml'}
 
 ## 激活 Windows 系统
+
 更新 KMS 服务并手动激活系统，以管理员身份执行命令：
 
 ```powershell
