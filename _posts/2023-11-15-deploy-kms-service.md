@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Docker 方式部署 KMS 服务
+title: 部署 KMS 服务
 date: 2023-11-15 09:33 +0000
 categories:
   - 技术
