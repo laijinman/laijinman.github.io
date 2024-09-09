@@ -14,74 +14,67 @@ mermaid: true
 Docker 和 K8S 方式部署 [APISIX](https://apisix.apache.org/zh/) 网关。
 
 ## 在 Docker 部署
+
 ```mermaid
 flowchart TB
 
-lb(Nginx/HAProxy/SLB/...\n接入层/负载均衡)
+lb(HTTP)
 
 subgraph docker [Docker]
-    apisix(APISIX\n网关)
-    dashboard(APISIX Dashboard\n网关控制面板)
-    etcd[(etcd\n配置数据持久化)]
+    apisix(APISIX)
+    dashboard(APISIX Dashboard)
+    etcd[(etcd)]
 end
 
-subgraph app_order [订单]
-    order_1(Instance 1)
-    order_2(Instance 2)
-    order_n(...)
+subgraph cluster_a [Cluster A]
+    app_a_1(Application A1)
+    app_a_2(Application A2)
+    app_a_n(Application An)
 end
 
-subgraph app_cart [购物车]
-    cart_1(Instance 1)
-    cart_2(Instance 2)
-    cart_n(...)
+subgraph cluster_b [Cluster B]
+    app_b_1(Application B1)
+    app_b_2(Application B2)
+    app_b_n(Application Bn)
 end
 
-lb --转发\n*---> apisix
-lb --转发\napisix-dashboard.laijinman.dev---> dashboard
-apisix --路由\n/order/*---> order_1 & order_2 & order_n
-apisix --路由\n/cart/*---> cart_1 & cart_2 & cart_n
-apisix --路由\n/*/*---> other_1 & other_2 & other_n
-apisix --获取路由配置--- etcd
-dashboard --读写路由配置--- etcd
+lb --> apisix
+apisix --route: /A---> app_a_1 & app_a_2 & app_a_n
+apisix --route: /B---> app_b_1 & app_b_2 & app_b_n
+apisix --read--- etcd
+dashboard --read/write--- etcd
 ```
 ### 部署 etcd
-```yaml
-version: "3"
 
-networks:
-  home:
-    name: home
+```yaml
+name: svc
 
 volumes:
-  etcd-data:
-    name: etcd-data
+  etcd: null
 
 services:
   etcd:
     container_name: etcd
+    image: bitnami/etcd:${ETCD_VERSION:latest}
     environment:
       ALLOW_NONE_AUTHENTICATION: "yes"
-      ETCD_ADVERTISE_CLIENT_URLS: "http://etcd.home:2379"
+      ETCD_ADVERTISE_CLIENT_URLS: "http://etcd:2379"
       ETCD_LISTEN_CLIENT_URLS: "http://0.0.0.0:2379"
-    hostname: etcd.home
-    image: bitnami/etcd:3.5.10
-    networks:
-     - home
     ports:
-    - 2379:2379
-    - 2380:2380
-    read_only: true
+      - 2379:2379
+      - 2380:2380
     restart: unless-stopped
     volumes:
-    - etcd-data:/bitnami/etcd
+      - etcd:/bitnami/etcd
 ```
 {: file='docker-compose.yml'}
-> 确保 `ETCD_ADVERTISE_CLIENT_URLS` 配置可被 APISIX 和 APISIX Dashboard 解释和访问有效，否则可能会出现读写 etcd 配置数据时异常。
+> 确保 `ETCD_ADVERTISE_CLIENT_URLS` 配置的地址可以被 APISIX 和 APISIX Dashboard 解释和有效访问，否则可能会出现读写 etcd 配置数据时异常。
 {: .prompt-warning }
 
 ### 部署 APISIX
+
 APISIX 配置文件：
+
 ```yaml
 deployment:
   role: traditional
@@ -117,35 +110,33 @@ nginx_config:
 services:
  apisix:
     container_name: apisix
+    image: apache/apisix:${APISIX_VERSION:-latest}
     depends_on:
-    - etcd
-    hostname: apisix.home
-    image: apache/apisix:3.6.0-debian
-    networks:
-     - home
+      - etcd
     restart: unless-stopped
     ports:
-    - 80:9080
-    - 443:9443
-    - 9180:9180
-    restart: unless-stopped
+      - 80:9080
+      - 443:9443
+      - 9180:9180
     volumes:
-    - ./apps/apisix/usr/local/apisix/conf/config.yaml:/usr/local/apisix/conf/config.yaml:ro
+      - path/to/config.yaml:/usr/local/apisix/conf/config.yaml:ro
 ```
 {: file='docker-compose.yml'}
-> `9180` 是 ADMIN API 端口，视需要对外开放。
+> `9180` 是 ADMIN API 端口，根据需要选择配置放开。
 {: .prompt-info }
 
 ### 部署 APISIX 控制面板（可选）
 APISIX 有提供 [Admin API](https://apisix.apache.org/zh/docs/apisix/admin-api/)，便于系统集成和管理 APISIX 服务，所以安装部署 APISIX Dashboard 不是必要的。但学习使用阶段，有 APISIX Dashboard 提供了图形化的操作界面，会直观不少，降低使用门槛。
 
 生成 APISIX Dashboard 配置文件：
+
 ```bash
 mkdir -p ./apps/apisix-dashboard/usr/local/apisix-dashboard/conf
 docker run --rm --entrypoint "cat" apache/apisix-dashboard:3.0.1-centos /usr/local/apisix-dashboard/conf/conf.yaml \
 | tee ./apps/apisix-dashboard/usr/local/apisix-dashboard/conf/conf.yaml
 ```
 修改以下内容：
+
 ```yaml
 conf:
   allow_list:
@@ -173,21 +164,19 @@ authentication:
 services:
   apisix-dashboard:
     container_name: apisix-dashboard
+    image: apache/apisix-dashboard:${APISIX_DASHBOARD_VERSION:latest}
     depends_on:
-    - etcd
-    hostname: apisix-dashboard.home
-    image: apache/apisix-dashboard:3.0.1-centos
-    networks:
-     - home 
+      - etcd
     restart: unless-stopped 
     ports: 
-    - 9000:9000 
+      - 9000:9000 
     volumes: 
-    - ./apps/apisix-dashboard/usr/local/apisix-dashboard/conf/conf.yaml:/usr/local/apisix-dashboard/conf/conf.yaml:ro
+      - path/to/conf.yaml:/usr/local/apisix-dashboard/conf/conf.yaml:ro
 ```
 {: file='docker-compose.yml'}
 
 ## 在 Kubernetes 部署
+
 ```mermaid
 flowchart TB
 
