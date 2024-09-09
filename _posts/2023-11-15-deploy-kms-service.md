@@ -9,7 +9,8 @@ tags:
   - vlmcsd
   - kms
 ---
-通过 Docker 方式部署 KMS 服务和简单使用介绍。
+
+通过 docker 方式搭建部署 vlmcsd 应用，实现 KMS（Key Management Service）服务及其使用。
 
 ## 部署 KMS 服务
 
