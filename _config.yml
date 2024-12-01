@@ -16,7 +16,7 @@ timezone: Asia/Shanghai
 
 title: 懒人笔记 # the main title
 
-tagline: 分享互联网相关技术和工具 # it will display as the sub-title
+tagline: 分享互联网相关技术和工具 # it will display as the subtitle
 
 description: >- # used by seo meta and the atom feed
   自由分享互联网相关技术和工具的免费个人网站。
@@ -26,10 +26,10 @@ description: >- # used by seo meta and the atom feed
 url: ""
 
 github:
-  username: laijinman # change to your github username
+  username: laijinman # change to your GitHub username
 
 #twitter:
-#  username: twitter_username # change to your twitter username
+#  username: twitter_username # change to your Twitter username
 
 social:
   # Change to your full name.
@@ -38,8 +38,8 @@ social:
   email: laijinman@qq.com # change to your email address
   links:
     # The first element serves as the copyright owner's link
-    #- https://twitter.com/username # change to your twitter homepage
-    - https://github.com/laijinman # change to your github homepage
+    #- https://twitter.com/username # change to your Twitter homepage
+    - https://github.com/laijinman # change to your GitHub homepage
     # Uncomment below to add more social links
     # - https://www.facebook.com/username
     # - https://www.linkedin.com/in/username
