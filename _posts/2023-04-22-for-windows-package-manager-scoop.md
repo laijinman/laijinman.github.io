@@ -11,6 +11,7 @@ tags:
 
 
 ## 安装方法
+
 ```powershell
 # 可选，首次运行远程脚本时执行并允许
 Set-ExecutionPolicy RemoteSigned -Scope CurrentUser
@@ -19,10 +20,13 @@ Set-ExecutionPolicy RemoteSigned -Scope CurrentUser
 irm get.scoop.sh | iex
 
 # 管理员权限账号安装，并指定安装目录
-iex "& {$(irm get.scoop.sh)} -RunAsAdmin -ScoopDir 'D:\scoop'"
+iex "& {$(irm get.scoop.sh)} -RunAsAdmin"
 ```
+- 指定安装目录：`-ScoopDir 'D:\scoop'`；
+- 使用代理：`-Proxy 'http://127.0.0.1:3128'`。
 
 添加常用的仓库：
+
 ```powershell
 # 先安装 git
 scoop install git
@@ -31,20 +35,23 @@ scoop bucket add extras
 scoop bucket add java
 ```
 
-默认仓库下载可能较慢，有条件可以设置代理：
+默认仓库下载可能较慢，有条件可以设置代理加速：
+
 ```powershell
+scoop config proxy 127.0.0.1:3128
+
+# 可选，设备脚本运行环境默认全局代理
 # Socks5
-$env:all_proxy="socks5://127.0.0.1:1080"
-
+#$env:all_proxy="socks5://127.0.0.1:1080"
 # HTTP
-$env:all_proxy="http://127.0.0.1:8080"
-
+#$env:all_proxy="http://127.0.0.1:8080"
 # 仅代理 HTTP/HTTPS 访问请求
-$env:HTTPS_PROXY="http://127.0.0.1:8080"
-$env:HTTP_PROXY="http://127.0.0.1:8080"
+#$env:HTTPS_PROXY="http://127.0.0.1:8080"
+#$env:HTTP_PROXY="http://127.0.0.1:8080"
 ```
-
+CMD 方式：
 ```bat
+# 可选，设备脚本运行环境默认全局代理
 set https_proxy="http://127.0.0.1:8080"
 set http_proxy="http://127.0.0.1:8080"
 ```
