@@ -23,7 +23,7 @@ irm get.scoop.sh | iex
 iex "& {$(irm get.scoop.sh)} -RunAsAdmin"
 ```
 - 指定安装目录：`-ScoopDir 'D:\scoop'`；
-- 使用代理：`-Proxy 'http://127.0.0.1:3128'`。
+- 使用代理加速：`-Proxy 'http://127.0.0.1:3128'`。
 
 添加常用的仓库：
 
